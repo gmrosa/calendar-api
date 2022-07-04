@@ -1,0 +1,22 @@
+version: "3.4"
+services:
+
+  calendar-mongo:
+    image: "mongo:4.0.10"
+    container_name: "calendar-mongo"
+    environment:
+      MONGO_INITDB_DATABASE: "calendar"
+      MONGODB_DB: "calendar"
+    ports:
+      - "27017:27017"
+
+  calendar-api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    depends_on:
+      - calendar-mongo
+    environment:
+      SPRING_DATA_MONGODB_URI: 'mongodb://calendar-mongo:27017/calendar'
+    ports:
+      - "8070:8070"
